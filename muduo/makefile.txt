@@ -1,0 +1,27 @@
+# Makefile for mymuduo project
+
+# Compiler settings
+CXX := g++
+CXXFLAGS := -std=c++11 -g -fPIC -Wall -Wextra
+LDFLAGS := -shared
+
+# Project settings
+TARGET := lib/libmymuduo.so
+SRC_DIR := .
+SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,%.o,$(SRC_FILES))
+
+# Build rules
+all: $(TARGET)
+
+$(TARGET): $(OBJ_FILES)
+	@mkdir -p lib
+	$(CXX) $(LDFLAGS) -o $@ $^
+
+%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(OBJ_FILES) $(TARGET)
+
+.PHONY: all clean
